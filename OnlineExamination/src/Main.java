@@ -20,6 +20,7 @@ class User {
 
     public void setUsername(String username) {
         this.username = username;
+
     }
 
     public String getPassword() {
@@ -74,6 +75,12 @@ class UserDatabase {
         }
         return null;
     }
+    public void updateUsername(User user, String newUsername) {
+        users.remove(user.getUsername());
+        user.setUsername(newUsername);
+        users.put(newUsername, user);
+        System.out.println("Username updated successfully!");
+    }
 
     public void updateUser(User user, String newPassword) {
         user.setPassword(newPassword);
@@ -123,7 +130,7 @@ public class Main {
                 System.out.println("2. Login");
                 System.out.println("3. Exit");
                 int choice = scanner.nextInt();
-                scanner.nextLine(); // Consume the newline character
+                scanner.nextLine();
 
                 switch (choice) {
                     case 1:
@@ -186,14 +193,14 @@ public class Main {
         System.out.println("4. Logout");
 
         int choice = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline character
+        scanner.nextLine();
 
         switch (choice) {
             case 1:
                 startExam();
                 break;
             case 2:
-                updateProfile();
+                changeusername();
                 break;
             case 3:
                 changePassword();
@@ -230,7 +237,7 @@ public class Main {
             }
             System.out.println("Enter your answer (1-" + options.length + "):");
             int answer = scanner.nextInt();
-            scanner.nextLine(); // Consume the newline character
+            scanner.nextLine(); 
 
             if (answer == mcq.getCorrectAnswerIndex() + 1) {
                 score++;
@@ -253,13 +260,27 @@ public class Main {
         userMenu();
     }
 
-    private void updateProfile() {
+//    private void updateProfile() {
+//        System.out.println("Enter your new username:");
+//        String newUsername = scanner.nextLine();
+//
+//        currentUser.setUsername(newUsername);
+//        System.out.println("Username updated successfully!");
+//    }
+private void changeusername() {
+    System.out.println("Enter your current username:");
+    String currentusername = scanner.nextLine();
+
+    if (currentUser.getUsername().equals(currentusername)) {
         System.out.println("Enter your new username:");
         String newUsername = scanner.nextLine();
 
-        currentUser.setUsername(newUsername);
-        System.out.println("Username updated successfully!");
+        userDatabase.updateUsername(currentUser, newUsername);
+    } else {
+        System.out.println("Invalid current username. username update failed.");
     }
+}
+
 
 
     private void changePassword() {
